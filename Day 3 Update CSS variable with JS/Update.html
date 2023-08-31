@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update CSS variable with JS</title>
+
+    <style> 
+        :root{
+            --base:#ffc600;
+            --spacing: 10px;
+            --blur: 10px;
+        }
+    
+        img{
+            padding:var(--spacing);
+            background: var(--base);
+            filter: blur(var(--blur));
+        }
+
+        .h2{
+            color:var(--base)
+        }
+    
+    
+        body {
+             text-align: center;
+             background-color: #193549;
+             color: white;
+             font-family: 'helvetica neue', sans-serif;
+             font-weight: 80;
+             font-size: 30px;
+                    }
+    
+        img {
+             width: 600px;
+             height: 400px;
+        }
+    
+        .controls {
+             margin-bottom: 50px;
+        }
+    
+        input {
+             width: 100px;
+        }
+    
+        </style>
+</head>
+<body>
+    <h2>Update CSS variable with <SPAN class="h2">JS</SPAN></h2>
+
+    <div class="control">
+        <label for="spacing">Spacing:</label>
+        <input id="spacing" type="range" name="spacing" min="10" max="200" value="10" data-sizing="px">
+
+        <label for="blur">Blur:</label>
+        <input type="range" name="blur" min="0" max="25" value="10" data-sizing="px">
+
+        <label for="Base">Base Colour</label>
+        <input id="base" type="color" name="base" value="#ffc600">
+
+    </div>
+
+    <img src="./cityscape.jpg" alt="cityview">
+
+    <script>
+        let input = document.querySelectorAll('.control input')
+
+        function handlerChange(){
+            console.log(this.value)
+
+            const suffix = this.dataset.sizing || '';
+            document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix)
+        }
+
+        input.forEach(input => input.addEventListener('change', handlerChange))
+    </script>
+
+
+    
+
+</body>
+</html>

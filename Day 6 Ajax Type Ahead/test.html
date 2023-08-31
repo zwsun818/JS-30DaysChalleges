@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+       
+    </style>
+</head>
+<body>
+    <div class="test">
+        <input type="text" class = "input1">
+        <div class="display">
+
+        </div>
+    </div>
+
+    <script>
+      const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+      const city = [];
+
+
+      fetch(endpoint)
+           .then(data => data.json())
+           .then(data => city.push(...data))
+
+    const inputKnot = document.querySelector('input');
+    const displayKnot = document.querySelector('.display');
+
+
+     function findMatch(inputWord, city){
+        const x = city.filter(item => {
+            const regex = new RegExp(inputWord,'gi');
+            return  item.city.match(regex);  
+        });
+        //console.log(x);
+        return x 
+     };
+
+     function displayMatch(){
+        const newList = findMatch(this.value, city);
+        const html = newList.map(item => {
+            return `<li>City:${item.city}</li>`
+        })
+        displayKnot.innerHTML = html
+       
+     }
+
+     
+
+
+
+     
+ 
+
+    
+
+
+    inputKnot.addEventListener('change', displayMatch);
+    inputKnot.addEventListener('keyup', displayMatch);
+
+      
+    </script>
+</body>
+</html>

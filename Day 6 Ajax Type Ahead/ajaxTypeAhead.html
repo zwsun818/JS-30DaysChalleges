@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajax Type Ahead</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+    <form class="search-form">
+        <input type="text" class = 'search' placeholder="City Or State">
+        <ul class = 'suggestions'>
+            <li>Filter for a city</li>
+            <li>Or a state</li>
+        </ul>
+    </form>
+
+    <script>
+        const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+        const city = [];
+
+        // Get data
+        fetch(endpoint)
+          .then(data => data.json())
+            . then(data => city.push(...data))
+
+
+        // prepare function 
+        function findMatch(inputWord, city){
+          
+             const y = city.filter(place => {
+                const regex = new RegExp(inputWord, 'gi');
+                 return  place.city.match(regex)||place.state.match(regex)
+                
+            })
+            console.log(y)
+            return y
+        }
+
+        function displayMatch (){
+            const matchArray = findMatch(this.value, city);
+            console.log(matchArray)
+            const html = matchArray.map(item => {
+                const regex = new RegExp(this.value, 'gi');
+                const cityName = item.city.replace(regex, `<span class="hl">${this.value}</span>`);
+                const stateName = item.state.replace(regex, `<span class="hl">${this.value}</span>`);
+
+
+                return `<li>
+                    <span class="name">${cityName}, ${stateName}</span>
+                    <span class="population">${numberWithCommas(item.population)}</span>
+                    </li>`
+            }).join('');
+            suggestion.innerHTML = html;
+        };
+
+
+        function numberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+        };
+
+        const searchInput = document.querySelector(".search");
+        const suggestion = document.querySelector(".suggestions");
+
+        searchInput.addEventListener('change', displayMatch);
+        searchInput.addEventListener('keyup', displayMatch);
+        
+
+    </script> 
+</body>
+</html>
